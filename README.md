@@ -55,7 +55,7 @@ Make sure you have the following installed on your machine:
     ```bash
     npm install
 - **Configure Firebase
-    To use Firebase services such as authentication and Firestore, configure Firebase as follows:
+    - To use Firebase services such as authentication and Firestore, configure Firebase as follows:
        - Create a Firebase project at Firebase Console.
        - Register your web app and copy the Firebase configuration details.
        - Add your Firebase configuration to the environment files:
