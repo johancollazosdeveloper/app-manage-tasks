@@ -49,8 +49,10 @@ Make sure you have the following installed on your machine:
 - **Clone the Repository
     Clone the project to your local machine using the following command:
     git clone https://github.com/your-username/app-marvel-heroes.git
+    ```bash
     cd app-marvel-heroes
 - **Install Dependencies
+    ```bash
     npm install
 - **Configure Firebase
     To use Firebase services such as authentication and Firestore, configure Firebase as follows:
@@ -58,6 +60,7 @@ Make sure you have the following installed on your machine:
        - Register your web app and copy the Firebase configuration details.
        - Add your Firebase configuration to the environment files:
        - In src/environments/environment.ts (for development):
+        ```bash
         export const environment = {
             production: false,
             firebaseConfig: {
@@ -71,26 +74,31 @@ Make sure you have the following installed on your machine:
             }
         };
 - **Setup Tailwind CSS
+    ```bash
     @tailwind base;
     @tailwind components;
     @tailwind utilities;
 
 ## Running the App
 - **To run the app locally, use the Angular CLI development server:
+    ```bash
     npm start
 
 - **Custom Server Port
-    The app is configured to run on port 4500 by default. If you want to change this port, you can modify the start script in package.json.
+    - The app is configured to run on port 4500 by default. If you want to change this port, you can modify the start script in package.json.
+        ```bash
         "start": "ng serve -o --port 4500"
 
 ## Build
 - **To build the project for production, run:
+    ```bash
     npm run build
 
 ## Firebase Configuration
 - **Initialize Firebase Hosting
-    To deploy the app to Firebase, you need to configure Firebase Hosting.
+    - To deploy the app to Firebase, you need to configure Firebase Hosting.
         - Run the following command to initialize Firebase in the project:
+            ```bash
             firebase init
         - Select Hosting from the list of Firebase services.
         - Choose the Firebase project you created earlier.
@@ -99,6 +107,7 @@ Make sure you have the following installed on your machine:
 
 ## Deploying to Firebase Hosting
 - **After building the project and configuring Firebase Hosting, you can deploy the app to Firebase using the following command:
+    ```bash
     firebase deploy
 - **Firebase will deploy the contents of the dist/ directory to Firebase Hosting, and the app will be live at the URL provided after deployment.
 
