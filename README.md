@@ -13,6 +13,7 @@ This is a Marvel Heroes web application built with Angular CLI 16, Firebase 9, a
 - [Build](#build)
 - [Firebase Configuration](#firebase-configuration)
 - [Deploying to Firebase Hosting](#deploying-to-firebase-hosting)
+- [License](#license)
 
 ## Demo
 
