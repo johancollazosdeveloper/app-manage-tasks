@@ -1,27 +1,45 @@
-# FireauthAngularTest
+# Marvel Heroes App
 
-This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 16.1.1.
+This is a Marvel Heroes web application built with Angular CLI 16, Firebase 9, and Firestore. The app allows users to register, browse a list of comics, and create personalized favorite lists.
 
-## Development server
+## Table of Contents
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
+- [Demo](#demo)
+- [Features](#features)
+- [Tech Stack](#tech-stack)
+- [Prerequisites](#prerequisites)
+- [Installation](#installation)
+- [Running the App](#running-the-app)
+- [Build](#build)
+- [Firebase Configuration](#firebase-configuration)
+- [Deploying to Firebase Hosting](#deploying-to-firebase-hosting)
 
-## Code scaffolding
+## Demo
 
-Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
+A demo of the app can be found [here](#) (https://app-marvel-heroes.web.app).
 
-## Build
+## Features
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
+- User registration and login
+- Browse Marvel comics
+- Personalized favorite lists
+- SweetAlert2 for user notifications
 
-## Running unit tests
+## Tech Stack
 
-Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
+- **Angular CLI**: 16.2.15
+- **Firebase**: 9
+  - Firebase Authentication
+  - Firestore (NoSQL database)
+  - Firebase Hosting
+- **Tailwind CSS**: 3.4.10 for responsive styling
+- **SweetAlert2**: 11.6.13 for notifications
 
-## Running end-to-end tests
+## Prerequisites
 
-Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
+Make sure you have the following installed on your machine:
 
-## Further help
-
-To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
+- **Node.js** (version 16 or higher is recommended): [Download Node.js](https://nodejs.org/)
+- **Angular CLI** (v16 or higher): Install Angular CLI globally
+  ```bash
+  npm install -g @angular/cli
