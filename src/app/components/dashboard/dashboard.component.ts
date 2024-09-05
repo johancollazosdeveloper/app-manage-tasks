@@ -1,5 +1,6 @@
 import { HttpErrorResponse } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
+import firebase from 'firebase/compat/app';
 import { Subscription } from 'rxjs';
 import { Character } from '../../shared/interfaces/character';
 import { User } from '../../shared/interfaces/user';
@@ -15,17 +16,22 @@ import { MarvelService } from '../../shared/services/marvel.service';
 export class DashboardComponent implements OnInit {
 
   characters: Character [] = [];
+  isLoading: boolean = false;
+  dataUser: User = {};
+  showSavedCharacters: boolean = false;
+  user: firebase.User | null = null;
   private subscription: Subscription | null = null;
-  documentData: User = {};
   private uid = JSON.parse(localStorage.getItem('uid')!);
+  private provider = localStorage.getItem('provider');
 
   constructor(private marvelService: MarvelService, 
               private authService: AuthService,
-              private firestoreService: FirestoreService) {}
+              private firestoreService: FirestoreService,
+            ) {}
 
   ngOnInit() {
-    this.loadCharacters();
     this.getUserData();
+    this.loadAllCharacters();
   }
 
   ngOnDestroy() {
@@ -34,68 +40,132 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  loadCharacters() {
+  /**
+   * @description
+   * * Carga todos los personajes de Marvel y los almacena en la propiedad `characters`.
+   * * También actualiza el estado de carga (`isLoading`) para reflejar si la solicitud está en progreso o completada.
+   */
+  loadAllCharacters() {
+    this.isLoading = true;
     this.subscription = this.marvelService.getCharacters().subscribe({
       next: (characters: Character[]) => {
         this.characters = characters;
+        this.isLoading = false;
       },
       error: (error: HttpErrorResponse) => {
         console.error('Error fetching Marvel characters', error);
+        this.isLoading = false;
       }
     });
   }
 
+  /**
+   * @description
+   * * Obtiene los datos del usuario basado en el proveedor de autenticación.
+   * * Si el proveedor es 'email', obtiene los datos del usuario desde Firestore usando el UID.
+   * * Si el proveedor es otro (por ejemplo, Google), obtiene el nombre del usuario desde el objeto `user` en Firestore.
+   */
   getUserData() {
-    this.firestoreService.getDocumentByUid(this.uid).subscribe({
+    if (this.provider == 'email') {
+      this.firestoreService.getDatauserByUid(this.uid).subscribe({
         next: (data: User) => {
-          this.documentData = data;
-          console.log(this.documentData);
-          
+          this.dataUser = data;
         },
         error: (error: HttpErrorResponse) => {
           console.error('Error fetching Marvel characters', error.message);
         }
       });
+    } else {
+      this.firestoreService.user$.subscribe(user => {
+        if (user) {
+          this.dataUser.name = user.displayName || '';
+          this.dataUser.lastName = '';
+        }
+      });
+    }
+    
   }
 
+  /**
+   * @description
+   * * Cierra la sesión del usuario actual llamando al servicio de autenticación.
+   */
   logOut() {
     this.authService.logOut();
   }
 
-    // Función para alternar la selección de un personaje
+  /**
+   * @description
+   * * Alterna la selección de un personaje.
+   * * Cambia el estado `isSelected` del personaje pasado como argumento.
+   * @param character {Character} - El personaje cuya selección se va a alternar.
+   */  
   toggleSelectCharacter(character: Character): void {
     character.isSelected = !character.isSelected;
   }
 
-  // Comprobar si hay algún personaje seleccionado
+  /**
+   * @description
+   * * Verifica si hay algún personaje seleccionado.
+   * * Revisa si al menos un personaje en la lista de `characters` está marcado como seleccionado.
+   * @returns {boolean} - Devuelve `true` si hay al menos un personaje seleccionado, de lo contrario `false`.
+   */
   isAnyCharacterSelected(): boolean {
     return this.characters.some(character => character.isSelected);
   }
-  
-  // Función para guardar preferencias
+
+  /**
+   * @description
+   * * Guarda las preferencias del usuario, que son los personajes seleccionados.
+   * * Filtra los personajes seleccionados y los guarda en Firestore.
+   * * Limpia la selección de personajes y vuelve a cargar los personajes seleccionados después de guardar.
+   */
   savePreferences(): void {
     const selectedCharacters = this.characters.filter(character => character.isSelected);
     if (selectedCharacters.length > 0) {
-      // Crea el objeto que deseas almacenar en Firestore
-      const preferences = selectedCharacters.map(character => ({
-        id: character.id,
-        name: character.name,
-        description: character.description,
-        thumbnail: character.thumbnail,
-        comics: character.comics,
-        isSelected: character.isSelected
-      }));
-
-      // Guarda en Firestore en la colección 'userHeroes'
-      this.firestoreService.saveListUserHeroes(this.uid, preferences).then(() => {
-        console.log('Preferencias guardadas con éxito.');
-      }).catch(error => {
-        console.error('Error al guardar preferencias:', error.message);
+      this.firestoreService.saveListUserHeroes(this.uid, selectedCharacters).subscribe({
+        next: () => {
+          console.log('Preferencias guardadas con éxito.');
+          this.characters.forEach(character => character.isSelected = false);
+          this.loadSelectedCharacters();
+        },
+        error: (error) => {
+          console.error('Error al guardar preferencias:', error.message);
+        }
       });
     } else {
       console.log('No hay personajes seleccionados para guardar.');
     }
   }
 
-}
+  /**
+   * @description
+   * * Carga los personajes seleccionados del usuario desde Firestore.
+   * * Actualiza la lista de personajes con los seleccionados y marca la propiedad `showSavedCharacters` como `true`.
+   */
+  loadSelectedCharacters(): void {
+    this.firestoreService.getSelectedCharacters(this.uid).subscribe({
+      next: (selectedCharacters: Character[]) => {
+        this.characters = selectedCharacters;
+        this.characters.forEach(character => character.isSelected = false);
+        this.showSavedCharacters = true;
+        console.log('entro');
+      },
+      error: (error) => {
+        console.error('Error fetching selected characters', error.message);
+      }
+    });
+    console.log(this.showSavedCharacters);
+    
+  }
 
+  /**
+   * @description
+   * * Alterna la vista entre los personajes guardados y todos los personajes.
+   * * Carga todos los personajes y oculta los personajes guardados.
+   */
+  toggleView() {
+    this.loadAllCharacters();
+    this.showSavedCharacters = false;
+  }
+}

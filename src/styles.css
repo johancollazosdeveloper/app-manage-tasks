@@ -104,6 +104,10 @@
     @apply max-w-xs rounded overflow-hidden shadow-lg bg-white dark:bg-gray-800;
 }
 
+.character-card.selected {
+    @apply border-4 border-blue-500 transform scale-105;
+}
+
 .character-image {
     @apply w-full h-48 object-cover;
 }
@@ -122,4 +126,20 @@
 
 .character-appearance {
     @apply text-gray-500 dark:text-gray-400 text-sm mt-2;
+}
+
+.loading-container {
+    @apply flex flex-col items-center justify-center min-h-screen;
+}
+
+.spinner {
+    @apply animate-spin rounded-full h-16 w-16 border-t-4 border-blue-500 border-solid;
+}
+
+.loading-text {
+    @apply mt-4 text-lg font-medium text-gray-600;
+}
+
+.button-save {
+    @apply fixed bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-600;
 }
