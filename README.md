@@ -17,7 +17,7 @@ This is a Marvel Heroes web application built with Angular CLI 16, Firebase 9, a
 
 ## Demo
 
-A demo of the app can be found [here](#) (https://app-marvel-heroes.web.app).
+A demo of the app can be found [here](#https://app-marvel-heroes.web.app).
 
 ## Features
 
