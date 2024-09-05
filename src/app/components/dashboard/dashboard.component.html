@@ -1,16 +1,33 @@
-<main class="bg-gray-50 dark:bg-gray-900 h-screen">
-  <div class="flex justify-center py-5">
-    <h2 class="h-auto text-3xl text-gray-900 dark:text-gray-50">DASHBOARD FIREBASE AUTH + ANGULAR APP</h2>
+<main class="dashboard-container">
+  <div class="header">
+    <img class="logo" src="../../../assets/images/logo.png" alt="logo">
+  </div>
+  <div class="dashboard-header">
+    <h2 class="dashboard-title">Hola: {{documentData.name+ ' ' +documentData.lastName + ' '}} bienvenido </h2> &nbsp; &nbsp;
+    <button (click)="logOut()" class="logout-button">
+      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6" style="display: inline;">
+        <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25a2.25 2.25 0 00-2.25-2.25h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15" />
+        <path stroke-linecap="round" stroke-linejoin="round" d="M18 12h-9m0 0l3-3m-3 3l3 3" />
+      </svg> Salir
+    </button>
   </div>
 
-  <div class="w-full flex justify-end py-5 pr-5">
-    <button (click)="logOut()"
-      class="w-28 text-white bg-red-600 hover:bg-red-500 focus:ring-4 focus:outline-none focus:ring-red-500 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800">Log
-      Out</button>
+  <div class="character-div">
+    <div class="character-grid">
+      <div *ngFor="let character of characters" class="character-card" [class.selected]="character.isSelected" (click)="toggleSelectCharacter(character)">
+        <img class="character-image" [src]="character.thumbnail.path + '.' + character.thumbnail.extension" alt="{{ character?.name }}">
+        <div class="character-info">
+          <div class="character-name">{{ character?.name }}</div>
+          <p class="character-description">
+            {{ character.description || 'No description available.' }}
+          </p>
+          <p class="character-appearance">First appearance: {{ character?.comics?.items?.[0]?.name || 'N/A' }}</p>
+        </div>
+      </div>
+    </div>
   </div>
 
-  <div class="w-full h-96 flex flex-col justify-center items-center">
-    <p class="text-4xl dark:text-gray-50">THANK YOU</p>
-  </div>
-
+  <button *ngIf="isAnyCharacterSelected()" class="fixed bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-600" (click)="savePreferences()">
+    Guardar preferencias
+  </button>
 </main>

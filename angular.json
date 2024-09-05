@@ -63,7 +63,8 @@
               "browserTarget": "fireauth-angular-test:build:production"
             },
             "development": {
-              "browserTarget": "fireauth-angular-test:build:development"
+              "browserTarget": "fireauth-angular-test:build:development",
+              "proxyConfig": "proxy.conf.json"
             }
           },
           "defaultConfiguration": "development"
