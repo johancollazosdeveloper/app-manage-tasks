@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/shared/services/auth.service';
+import { User } from '../../shared/interfaces/user';
+import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -7,11 +8,17 @@ import { AuthService } from 'src/app/shared/services/auth.service';
   styleUrls: ['./sign-up.component.css']
 })
 export class SignUpComponent {
-  constructor(private authService: AuthService) {
+  constructor(private authService: AuthService) {}
 
+  signUp(name: string, lastName: string, identification: number, phone: number, email: string, password: string) {
+    const userData: User = {
+      name,
+      lastName,
+      identification,
+      phone,
+      email
+    };
+    this.authService.signUpWithEmailAndPassword(email, password, userData);
   }
 
-  signUp(email: string, password: string) {
-    this.authService.signUpWithEmailAndPassword(email, password);
-  }
 }
