@@ -66,6 +66,7 @@ export class DashboardComponent implements OnInit {
    * * Si el proveedor es otro (por ejemplo, Google), obtiene el nombre del usuario desde el objeto `user` en Firestore.
    */
   getUserData() {
+    this.isLoading = true;
     if (this.provider == 'email') {
       this.firestoreService.getDatauserByUid(this.uid).subscribe({
         next: (data: User) => {
@@ -144,7 +145,6 @@ export class DashboardComponent implements OnInit {
    * * Actualiza la lista de personajes con los seleccionados y marca la propiedad `showSavedCharacters` como `true`.
    */
   loadSelectedCharacters(): void {
-    this.isLoading = true;
     this.firestoreService.getSelectedCharacters(this.uid).subscribe({
       next: (selectedCharacters: Character[]) => {
         this.characters = selectedCharacters;
