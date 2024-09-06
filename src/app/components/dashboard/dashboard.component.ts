@@ -68,7 +68,7 @@ export class DashboardComponent implements OnInit {
   getUserData() {
     this.isLoading = true;
     if (this.provider == 'email') {
-      this.firestoreService.getDatauserByUid(this.uid).subscribe({
+      this.subscription = this.firestoreService.getDatauserByUid(this.uid).subscribe({
         next: (data: User) => {
           this.dataUser = data;
         },
@@ -77,7 +77,7 @@ export class DashboardComponent implements OnInit {
         }
       });
     } else {
-      this.firestoreService.user$.subscribe(user => {
+      this.subscription = this.firestoreService.user$.subscribe(user => {
         if (user) {
           this.dataUser.name = user.displayName || '';
           this.dataUser.lastName = '';
@@ -124,7 +124,7 @@ export class DashboardComponent implements OnInit {
   savePreferences(): void {
     const selectedCharacters = this.characters.filter(character => character.isSelected);
     if (selectedCharacters.length > 0) {
-      this.firestoreService.saveListUserHeroes(this.uid, selectedCharacters).subscribe({
+      this.subscription = this.firestoreService.saveListUserHeroes(this.uid, selectedCharacters).subscribe({
         next: () => {
           console.log('Preferencias guardadas con éxito.');
           this.characters.forEach(character => character.isSelected = false);
@@ -145,7 +145,7 @@ export class DashboardComponent implements OnInit {
    * * Actualiza la lista de personajes con los seleccionados y marca la propiedad `showSavedCharacters` como `true`.
    */
   loadSelectedCharacters(): void {
-    this.firestoreService.getSelectedCharacters(this.uid).subscribe({
+    this.subscription = this.firestoreService.getSelectedCharacters(this.uid).subscribe({
       next: (selectedCharacters: Character[]) => {
         this.characters = selectedCharacters;
         this.characters.forEach(character => character.isSelected = false);
@@ -178,7 +178,7 @@ export class DashboardComponent implements OnInit {
    */
   checkIfCharactersExist(uid: string): Promise<boolean> {
     return new Promise((resolve, reject) => {
-      this.firestoreService.getSelectedCharacters(uid).subscribe({
+      this.subscription = this.firestoreService.getSelectedCharacters(uid).subscribe({
         next: (selectedCharacters: Character[]) => {
           if (selectedCharacters.length > 0) {
             console.log('Characters found');
