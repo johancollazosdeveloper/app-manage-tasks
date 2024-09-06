@@ -13,7 +13,7 @@
         "build": {
           "builder": "@angular-devkit/build-angular:browser",
           "options": {
-            "outputPath": "dist/fireauth-angular-test",
+            "outputPath": "dist/app-marvel-heroes",
             "index": "src/index.html",
             "main": "src/main.ts",
             "allowedCommonJsDependencies": [
