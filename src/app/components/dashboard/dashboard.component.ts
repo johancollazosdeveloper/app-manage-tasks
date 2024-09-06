@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
 
   ngOnInit() {
     this.getUserData();
-    this.loadAllCharacters();
+    this.validateUserHeroes()
   }
 
   ngOnDestroy() {
@@ -144,19 +144,19 @@ export class DashboardComponent implements OnInit {
    * * Actualiza la lista de personajes con los seleccionados y marca la propiedad `showSavedCharacters` como `true`.
    */
   loadSelectedCharacters(): void {
+    this.isLoading = true;
     this.firestoreService.getSelectedCharacters(this.uid).subscribe({
       next: (selectedCharacters: Character[]) => {
         this.characters = selectedCharacters;
         this.characters.forEach(character => character.isSelected = false);
         this.showSavedCharacters = true;
-        console.log('entro');
+        this.isLoading = false;
       },
       error: (error) => {
         console.error('Error fetching selected characters', error.message);
+        this.isLoading = false;
       }
     });
-    console.log(this.showSavedCharacters);
-    
   }
 
   /**
@@ -167,5 +167,51 @@ export class DashboardComponent implements OnInit {
   toggleView() {
     this.loadAllCharacters();
     this.showSavedCharacters = false;
+  }
+
+  /**
+   * @description
+   * * Verifica si existen personajes guardados para el usuario dado su UID.
+   * * Retorna un valor booleano en función de si existen o no personajes guardados.
+   * @param uid - El identificador único del usuario para buscar sus personajes guardados.
+   * @returns Una promesa que resuelve a `true` si se encuentran personajes guardados, de lo contrario, `false`.
+   */
+  checkIfCharactersExist(uid: string): Promise<boolean> {
+    return new Promise((resolve, reject) => {
+      this.firestoreService.getSelectedCharacters(uid).subscribe({
+        next: (selectedCharacters: Character[]) => {
+          if (selectedCharacters.length > 0) {
+            console.log('Characters found');
+            resolve(true);
+          } else {
+            console.log('No characters found');
+            resolve(false);
+          }
+        },
+        error: (error) => {
+          console.error('Error fetching selected characters', error.message);
+          reject(false);
+        }
+      });
+    });
+  }
+
+  /**
+   * @description
+   * * Valida si el usuario tiene personajes guardados y realiza la acción correspondiente.
+   * * Si existen personajes guardados, carga los personajes seleccionados.
+   * * Si no existen personajes guardados, carga todos los personajes disponibles.
+   */
+  async validateUserHeroes() {
+    try {
+      const hasCharacters = await this.checkIfCharactersExist(this.uid);
+      if (hasCharacters) {
+        this.loadSelectedCharacters();
+      } else {
+        this.loadAllCharacters();
+      }
+    } catch (error) {
+      console.error('Error checking characters:', error);
+    }
   }
 }
