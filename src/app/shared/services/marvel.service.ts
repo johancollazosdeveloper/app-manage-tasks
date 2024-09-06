@@ -51,10 +51,15 @@ export class MarvelService {
       imageHeight: 200,
       imageAlt: 'Error icon',
       title: 'Oops...',
-      text: errorMessage,
+      html: `<span class="sweetalert-text">${errorMessage}</span>`,
       confirmButtonColor: '#fa5252',
       confirmButtonText: 'Aceptar',
-    });
+      customClass: {
+        popup: 'sweetalert-popup',
+        title: 'sweetalert-title',
+        confirmButton: 'sweetalert-confirm',
+      }
+    }); 
 
     return throwError(() => new Error(errorMessage));
   }
