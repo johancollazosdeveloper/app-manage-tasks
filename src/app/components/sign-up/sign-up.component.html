@@ -2,130 +2,36 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <img class="logo" src="../../../assets/images/logo.png" alt="logo" />
+        <img class="logo" src="../../../assets/images/logo.png" alt="logo">
       </div>
-      <h1 class="title">Registra tus datos</h1>
-
-      <form [formGroup]="signUpForm" (ngSubmit)="signUp()" class="form">
+      <h1 class="title">
+        Registra tus datos
+      </h1>
         <div>
           <label for="name" class="label">Nombres</label>
-          <input
-            type="text"
-            id="name"
-            formControlName="name"
-            class="input"
-            placeholder="Juanito"
-            required
-          />
-          <span
-            *ngIf="nameControl?.errors?.['required'] && (signUpFormSubmitted)"
-            class="error-message"
-          >
-            El nombre es obligatorio.
-          </span>
+          <input type="text" name="name" id="name" #name class="input" placeholder="Peter" required>
         </div>
-
         <div>
           <label for="lastName" class="label">Apellidos</label>
-          <input
-            type="text"
-            id="lastName"
-            formControlName="lastName"
-            class="input"
-            placeholder="Perez"
-            required
-          />
+          <input type="text" name="lastName" id="lastName" #lastName class="input" placeholder='Parker' required>
         </div>
-
         <div>
-          <label for="identification" class="label"
-            >Numero de identificación</label
-          >
-          <input
-            type="number"
-            id="identification"
-            formControlName="identification"
-            class="input"
-            placeholder="10617589"
-            required
-          />
-          <span
-            *ngIf="identificationControl?.errors?.['required'] && (signUpFormSubmitted)"
-            class="error-message"
-          >
-            La identificación es obligatoria.
-          </span>
-          <span
-            *ngIf="identificationControl?.errors?.['pattern'] && signUpFormSubmitted"
-            class="error-message"
-          >
-            La identificación debe tener al menos 8 dígitos.
-          </span>
+          <label for="identification" class="label">Numero de identificación</label>
+          <input type="number" name="identification" id="identification" #identification class="input" placeholder="10617589" required>
         </div>
-
         <div>
           <label for="phone" class="label">Celular</label>
-          <input
-            type="number"
-            id="phone"
-            formControlName="phone"
-            class="input"
-            placeholder="3125623265"
-            required
-          />
-          <span
-            *ngIf="phoneControl?.errors?.['pattern'] && signUpFormSubmitted"
-            class="error-message"
-          >
-            El celular debe ser un número válido de 10 dígitos que comience con
-            3.
-          </span>
+          <input type="number" name="phone" id="phone" #phone class="input" placeholder="3125623265" required>
         </div>
-
         <div>
           <label for="email" class="label">Correo electrónico</label>
-          <input
-            type="email"
-            id="email"
-            formControlName="email"
-            class="input"
-            placeholder="juanito@managetasks.com"
-            required
-          />
-          <span
-            *ngIf="
-              emailControl?.errors?.['required'] &&
-              (passwordControl?.touched ||
-                passwordControl?.dirty ||
-                signUpFormSubmitted)
-            "
-            class="error-message"
-          >
-            Por favor ingrese un correo electrónico válido.
-          </span>
+          <input type="email" name="email" id="email" #email class="input" placeholder="spiderman@marvel.com" required>
         </div>
-
         <div>
           <label for="password" class="label">Contraseña</label>
-          <input
-            type="password"
-            id="password"
-            formControlName="password"
-            class="input"
-            placeholder="••••••••"
-            required
-          />
-          <span
-            *ngIf="passwordControl?.errors?.['required'] && (signUpFormSubmitted)"
-            class="error-message"
-          >
-            La contraseña es obligatoria.
-          </span>
+          <input type="password" name="password" id="password" #password class="input" placeholder='••••••••' required>
         </div>
-
-        <button type="submit" class="button">Registrar</button>
-      </form>
-
+        <button type="click" (click)="signUp(name.value, lastName.value, +identification.value, +phone.value, email.value, password.value)" class="button">Registrar</button>
       <p class="footer">
         ¿Ya tienes una cuenta?
         <a routerLink="/login" class="signup-link">Accede</a>
