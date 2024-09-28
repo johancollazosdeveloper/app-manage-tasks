@@ -9,44 +9,47 @@ import Swal from 'sweetalert2';
 import { User } from '../interfaces/user';
 
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class AuthService {
-
-  uid: string = "";
+  uid: string = '';
   constructor(
     private firebaseAuthenticationService: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router,
     private ngZone: NgZone
   ) {
-
     /**
      * @description
-     * * Suscribe al estado de autenticación del usuario para actualizar el UID en localStorage.
-     * * Si el usuario está autenticado, se guarda el UID en `localStorage`. Si no, se establece 'null'.
+     * * Suscribe al estado de autenticacion del usuario para actualizar el UID en localStorage.
+     * * Si el usuario esta autenticado, se guarda el UID en `localStorage`. Si no, se establece 'null'.
      */
     this.firebaseAuthenticationService.authState.subscribe((user) => {
       if (user) {
-        const uid = user?.uid != undefined ? user?.uid : "";
+        const uid = user?.uid || '';
         this.uid = uid;
-        localStorage.setItem('uid', JSON.stringify(this.uid));
+        try {
+          localStorage.setItem('uid', JSON.stringify(this.uid));
+        } catch (e) {
+          console.error('Error saving uid to localStorage:', e);
+        }
       } else {
-        localStorage.setItem('uid', 'null');
+        localStorage.removeItem('uid');
       }
-    })
+    });
   }
 
   /**
    * @description
-   * * Permite el inicio de sesión con correo electrónico y contraseña.
-   * * Llama al servicio de autenticación para iniciar sesión y guarda el proveedor en `localStorage`.
-   * @param email {string} - El correo electrónico del usuario.
-   * @param password {string} - La contraseña del usuario.
-   * @returns {Promise<string | undefined>} - El UID del usuario si el inicio de sesión es exitoso.
+   * * Permite el inicio de sesion con correo electronico y contrasena.
+   * * Llama al servicio de autenticacion para iniciar sesion y guarda el proveedor en `localStorage`.
+   * @param email {string} - El correo electronico del usuario.
+   * @param password {string} - La contrasena del usuario.
+   * @returns {Promise<string | undefined>} - El UID del usuario si el inicio de sesion es exitoso.
    */
   logInWithEmailAndPassword(email: string, password: string) {
-    return this.firebaseAuthenticationService.signInWithEmailAndPassword(email, password)
+    return this.firebaseAuthenticationService
+      .signInWithEmailAndPassword(email, password)
       .then((userCredential) => {
         this.observeUserState();
         localStorage.setItem('provider', 'email');
@@ -57,13 +60,14 @@ export class AuthService {
 
   /**
    * @description
-   * * Permite el inicio de sesión con el proveedor de Google.
-   * * Utiliza el método `signInWithPopup` para autenticar al usuario con Google y guarda el proveedor en `localStorage`.
-   * @returns {Promise<void>} - Una promesa que se resuelve cuando el inicio de sesión es exitoso.
+   * * Permite el inicio de sesion con el proveedor de Google.
+   * * Utiliza el metodo `signInWithPopup` para autenticar al usuario con Google y guarda el proveedor en `localStorage`.
+   * @returns {Promise<void>} - Una promesa que se resuelve cuando el inicio de sesion es exitoso.
    */
   logInWithGoogleProvider() {
-    return this.firebaseAuthenticationService.signInWithPopup(new GoogleAuthProvider())
-      .then(() => { 
+    return this.firebaseAuthenticationService
+      .signInWithPopup(new GoogleAuthProvider())
+      .then(() => {
         this.observeUserState();
         localStorage.setItem('provider', 'google');
       })
@@ -72,22 +76,26 @@ export class AuthService {
 
   /**
    * @description
-   * * Registra un nuevo usuario con correo electrónico y contraseña.
-   * * Guarda los datos del usuario en Firestore después de crear la cuenta.
-   * @param email {string} - El correo electrónico del usuario.
-   * @param password {string} - La contraseña del usuario.
+   * * Registra un nuevo usuario con correo electronico y contrasena.
+   * * Guarda los datos del usuario en Firestore despues de crear la cuenta.
+   * @param email {string} - El correo electronico del usuario.
+   * @param password {string} - La contrasena del usuario.
    * @param userData {User} - Datos adicionales del usuario a guardar en Firestore.
    * @returns {Promise<void>} - Una promesa que se resuelve cuando el registro es exitoso.
    */
   signUpWithEmailAndPassword(email: string, password: string, userData: User) {
-    return this.firebaseAuthenticationService.createUserWithEmailAndPassword(email, password)
+    return this.firebaseAuthenticationService
+      .createUserWithEmailAndPassword(email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         if (!user || !user.uid) {
           throw new Error('User information is missing after sign up.');
         }
         // Guarda los datos adicionales en Firestore
-        return this.firestore.collection('users').doc(user.uid).set(userData)
+        return this.firestore
+          .collection('users')
+          .doc(user.uid)
+          .set(userData)
           .then(() => {
             console.log('User data saved successfully');
             this.observeUserState();
@@ -105,22 +113,22 @@ export class AuthService {
           .catch((error: HttpErrorResponse) => this.handleError(error));
       })
       .catch((error: HttpErrorResponse) => this.handleError(error));
-  }  
-
-  /**
-   * @description
-   * * Observa el estado de autenticación del usuario y redirige al dashboard si el usuario está autenticado.
-   */
-  observeUserState() {
-    this.firebaseAuthenticationService.authState.subscribe((userState) => {
-      userState && this.ngZone.run(() => this.router.navigate(['dashboard']))
-    })
   }
 
   /**
    * @description
-   * * Verifica si el usuario está autenticado basándose en el UID almacenado en `localStorage`.
-   * @returns {boolean} - `true` si el usuario está autenticado, de lo contrario `false`.
+   * * Observa el estado de autenticacion del usuario y redirige al dashboard si el usuario estï¿½ autenticado.
+   */
+  observeUserState() {
+    this.firebaseAuthenticationService.authState.subscribe((userState) => {
+      userState && this.ngZone.run(() => this.router.navigate(['dashboard']));
+    });
+  }
+
+  /**
+   * @description
+   * * Verifica si el usuario esto autenticado basondose en el UID almacenado en `localStorage`.
+   * @returns {boolean} - `true` si el usuario esta autenticado, de lo contrario `false`.
    */
   get isLoggedIn(): boolean {
     const user = JSON.parse(localStorage.getItem('uid')!);
@@ -129,22 +137,22 @@ export class AuthService {
 
   /**
    * @description
-   * * Cierra la sesión del usuario y redirige a la página de inicio de sesión.
+   * * Cierra la sesion del usuario y redirige a la pï¿½gina de inicio de sesiï¿½n.
    * * Limpia el UID y el proveedor del usuario en `localStorage`.
-   * @returns {Promise<void>} - Una promesa que se resuelve cuando el cierre de sesión es exitoso.
+   * @returns {Promise<void>} - Una promesa que se resuelve cuando el cierre de sesiï¿½n es exitoso.
    */
   logOut() {
     return this.firebaseAuthenticationService.signOut().then(() => {
       localStorage.removeItem('uid');
       localStorage.removeItem('provider');
       this.router.navigate(['login']);
-    })
+    });
   }
 
   /**
    * @description
    * * Maneja los errores de las solicitudes HTTP.
-   * * Muestra un mensaje de error utilizando SweetAlert2 según el tipo de error (cliente o servidor).
+   * * Muestra un mensaje de error utilizando SweetAlert2 segï¿½n el tipo de error (cliente o servidor).
    * * Devuelve un observable que emite el error manejado.
    * @param error {HttpErrorResponse} - El error de la respuesta HTTP que se va a manejar.
    * @returns {Observable<never>} - Un observable que emite el error manejado.
@@ -171,7 +179,7 @@ export class AuthService {
         popup: 'sweetalert-popup',
         title: 'sweetalert-title',
         confirmButton: 'sweetalert-confirm',
-      }
+      },
     });
 
     return throwError(() => new Error(errorMessage));
