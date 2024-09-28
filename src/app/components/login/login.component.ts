@@ -1,70 +1,60 @@
-import { Component } from '@angular/core';
-import { NgModel } from '@angular/forms';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../../shared/services/auth.service';
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
-  styleUrls: ['./login.component.css']
+  styleUrls: ['./login.component.css'],
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit {
+  loginForm!: FormGroup;
+  loginFormSubmitted: boolean = false;
 
-  // Model properties for ngModel
-  email: string = '';
-  password: string = '';
-  
-  emailTouched: boolean = false;
-  passwordTouched: boolean = false;
+  constructor(private fb: FormBuilder, private authService: AuthService) {}
 
-  constructor(private authService: AuthService) {}
-
-  /**
-   * @description
-   * * Marca un campo como tocado cuando el usuario hace blur sobre el campo.
-   * * Esto asegura que se muestren los errores de validación si existen.
-   * @param control {NgModel} - Control del modelo para el campo de entrada
-   * @param field {string} - Nombre del campo ('email' o 'password') para determinar cuál marca como tocado
-   */
-  onBlur(control: NgModel, field: string) {
-    if (field === 'email') {
-      this.emailTouched = true;
-    } else if (field === 'password') {
-      this.passwordTouched = true;
-    }
-    control.control.markAsTouched();
+  ngOnInit() {
+    this.loginForm = this.fb.group({
+      email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required]],
+    });
   }
 
   /**
    * @description
    * * Metodo que permite loguearse mediante un usuario previamente registrado en la App
-   * @param emailControl {NgModel} - Control del modelo para el campo de correo electrónico
-   * @param passwordControl {NgModel} - Control del modelo para el campo de contraseña
    */
-  logIn(emailControl: NgModel, passwordControl: NgModel) {
-    
-    emailControl.control.markAsTouched();
-    passwordControl.control.markAsTouched();
-    emailControl.control.value == "" ? this.emailTouched = true : this.emailTouched = false;
-
-    if (emailControl.invalid || passwordControl.invalid) {
+  logIn() {
+    this.loginFormSubmitted = true;
+    if (this.loginForm.invalid) {
       return;
     }
 
-    // Si los campos son válidos, llama al servicio de autenticación
-    this.authService.logInWithEmailAndPassword(this.email, this.password)
-      .then(response => {
-        console.log('Inicio de sesión exitoso', response);
+    const { email, password } = this.loginForm.value;
+
+    this.authService
+      .logInWithEmailAndPassword(email, password)
+      .then((response) => {
+        console.log('Inicio de sesiÃ³n exitoso', response);
       })
-      .catch(error => {
-        console.error('Error de inicio de sesión', error);
+      .catch((error) => {
+        console.error('Error de inicio de sesiÃ³n', error);
       });
   }
 
   /**
    * @description
-   * * Método que permite iniciar sesión con Google OAuth 2.0
+   * * Metodo que permite iniciar sesion con Google OAuth 2.0
    */
   logInWithGoogle() {
     this.authService.logInWithGoogleProvider();
+  }
+
+  get emailControl() {
+    return this.loginForm.get('email');
+  }
+
+  get passwordControl() {
+    return this.loginForm.get('password');
   }
 }
