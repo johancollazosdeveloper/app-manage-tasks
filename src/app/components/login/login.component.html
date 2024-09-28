@@ -2,33 +2,60 @@
   <div class="container">
     <div class="content">
       <div class="header">
-        <img class="logo" src="../../../assets/images/logo.png" alt="logo">
-      </div>      
-      <h1 class="title">
-        Inicia sesión en tu cuenta
-      </h1>
+        <img class="logo" src="../../../assets/images/logo.png" alt="logo" />
+      </div>
+      <h1 class="title">Inicia sesión en tu cuenta</h1>
+
+      <form [formGroup]="loginForm" (ngSubmit)="logIn()" class="form">
         <div>
           <label for="email" class="label">Correo electrónico</label>
-          <input type="email" name="email" id="email" [(ngModel)]="email" #emailControl="ngModel" class="input" 
-                  placeholder="spiderman@marvel.com" pattern="[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}" 
-                  (blur)="onBlur(emailControl, 'email')" required>
-          <span *ngIf="emailControl.invalid && (emailControl.dirty || emailTouched)" class="error-message">
+          <input
+            type="email"
+            id="email"
+            formControlName="email"
+            class="input"
+            placeholder="juanito@managetasks.com"
+          />
+          <span
+            *ngIf="emailControl?.errors?.['required'] && (passwordControl?.touched || passwordControl?.dirty || loginFormSubmitted)"
+            class="error-message"
+          >
             Por favor ingrese un correo electrónico válido.
           </span>
         </div>
+
         <div>
           <label for="password" class="label">Contraseña</label>
-          <input type="password" name="password" id="password" [(ngModel)]="password" #passwordControl="ngModel" class="input" 
-                  placeholder='••••••••' (blur)="onBlur(passwordControl, 'password')" required>
-        </div> 
-        <span *ngIf="passwordControl.invalid && (passwordControl.dirty || passwordTouched)" class="error-message">
+          <input
+            type="password"
+            id="password"
+            formControlName="password"
+            class="input"
+            placeholder="••••••••"
+          />
+        </div>
+        <span
+          *ngIf="passwordControl?.errors?.['required'] && (passwordControl?.touched || passwordControl?.dirty || loginFormSubmitted)"
+          class="error-message"
+        >
           La contraseña es obligatoria.
-        </span><br/>
-        <button type="button" (click)="logIn(emailControl, passwordControl)" class="button">Iniciar sesión</button>
-        <button type="button" (click)="logInWithGoogle()" class="google-button">
-        <img class="google-logo" src="https://www.svgrepo.com/show/475656/google-color.svg" alt="Google">
+        </span>
+        <br />
+
+        <!-- Botón para enviar el formulario -->
+        <button type="submit" class="button">Iniciar sesión</button>
+      </form>
+
+      <!-- Botón para iniciar sesión con Google -->
+      <button type="button" (click)="logInWithGoogle()" class="google-button">
+        <img
+          class="google-logo"
+          src="https://www.svgrepo.com/show/475656/google-color.svg"
+          alt="Google"
+        />
         <span>Iniciar sesión con Google</span>
       </button>
+
       <p class="footer">
         ¿No tienes una cuenta?
         <a routerLink="/sign-up" class="signup-link">Regístrese</a>
