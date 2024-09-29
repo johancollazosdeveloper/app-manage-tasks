@@ -1,6 +1,6 @@
 # App Manage Tasks
 
-This is a Manage Tasks web application built with Angular CLI 16, Firebase 9, and Firestore. The app allows users to register, browse a list of task, and create personalized task to asign to persons.
+This is a Manage Tasks web application built with Angular CLI 16, Firebase 9, and Firestore. The app allows users to register, browse a list of task, and create personalized task to asign to persons nad skills.
 
 ## Table of Contents
 
@@ -29,7 +29,7 @@ A demo of the app can be found [here](#https://app-manage-tasks.web.app) (https:
 ## Tech Stack
 
 - **Angular CLI**: 16.2.15
-- **Firebase**: 9
+- **Firebase**: 10
   - Firebase Authentication
   - Firestore (NoSQL database)
   - Firebase Hosting
