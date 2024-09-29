@@ -1,51 +1,53 @@
 <app-loading [isLoading]="isLoading"></app-loading>
 <div *ngIf="!isLoading">
-  <div class="character-div">
-    <div class="character-grid">
-      <div
-        *ngFor="let character of characters"
-        class="character-card"
-        [class.selected]="character.isSelected"
-        (click)="toggleSelectCharacter(character)"
-      >
-        <img
-          class="character-image"
-          [src]="character.thumbnail.path + '.' + character.thumbnail.extension"
-          alt="{{ character?.name }}"
-        />
-        <div class="character-info">
-          <div class="character-name">{{ character?.name }}</div>
-          <p class="character-description">
-            {{ character.description || 'No description available.' }}
-          </p>
-          <p class="character-appearance">
-            First appearance:
-            {{ character?.comics?.items?.[0]?.name || 'N/A' }}
-          </p>
-        </div>
+  <div *ngIf="noTasksMessage" class="error-message">
+    {{ noTasksMessage }}
+  </div>
+  <div class="task-card-container">
+    <div
+      *ngFor="let task of tasks"
+      class="task-card"
+      [class.completed]="task.status"
+    >
+      <h3 class="task-title">{{ task.title }}</h3>
+      <p class="task-deadline">Fecha límite: {{ task.deadLine }}</p>
+
+      <p class="font-semibold" *ngIf="task.people.length > 0">
+        Personas asociadas:
+      </p>
+
+      <ul>
+        <li *ngFor="let person of task.people" class="mb-4">
+          {{ person.fullName }} (Edad: {{ person.age }})
+          <ul class="mt-2">
+            <li *ngIf="person.skills.length > 0" class="font-semibold">
+              Habilidades:
+            </li>
+            <li *ngFor="let skill of person.skills" class="ml-4">
+              {{ skill.name }}
+            </li>
+          </ul>
+        </li>
+      </ul>
+
+      <p *ngIf="task.people.length === 0">No hay personas asociadas.</p>
+      <div class="task-status">
+        Estado:
+        <strong>{{ task.status ? 'Completada' : 'Pendiente' }}</strong>
       </div>
+
+      <label>
+        <input
+          type="radio"
+          name="taskStatus{{ task.id }}"
+          (change)="updateTaskStatus(task, true)"
+          [checked]="task.status"
+        />
+        Marcar como completada
+      </label>
     </div>
   </div>
 
-  <!--   <button
-    *ngIf="!showSavedCharacters && isAnyCharacterSelected()"
-    class="button-save"
-    (click)="savePreferences()"
-  >
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 24 24"
-      class="w-6 h-6 inline"
-    >
-      <path
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2"
-        d="M6 2h12a2 2 0 012 2v16a2 2 0 01-2 2H6a2 2 0 01-2-2V4a2 2 0 012-2zm3 2v4h6V4H9zm-1 12v-2h8v2H8z"
-      />
-    </svg>
-    Guardar preferencias
-  </button> -->
   <button class="button-save animated-button" [routerLink]="['/create-task']">
     <svg
       xmlns="http://www.w3.org/2000/svg"

@@ -15,12 +15,9 @@ import { SignUpComponent } from './components/register/r-sign-up/sign-up/sign-up
 import { TlcFiltrosComponent } from './components/tasks/t-list/tl/tl-consulta/tlc-filtros/tlc-filtros.component';
 import { TlcTablaComponent } from './components/tasks/t-list/tl/tl-consulta/tlc-tabla/tlc-tabla.component';
 import { TlcComponent } from './components/tasks/t-list/tl/tl-consulta/tlc/tlc.component';
-import { TlghFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-habilidad/tlgh-formulario/tlgh-formulario.component';
-import { TlghComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-habilidad/tlgh/tlgh.component';
-import { TlgpFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-persona/tlgp-formulario/tlgp-formulario.component';
-import { TlgpComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-persona/tlgp/tlgp.component';
-import { TlgtFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-tarea/tlgt-formulario/tlgt-formulario.component';
-import { TlgtComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-tarea/tlgt/tlgt.component';
+import { TlgHabilidadFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-tarea-formulario/tlg-persona-formulario/tlg-habilidad-formulario/tlg-habilidad-formulario.component';
+import { TlgPersonaFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-tarea-formulario/tlg-persona-formulario/tlg-persona-formulario.component';
+import { TlgTareaFormularioComponent } from './components/tasks/t-list/tl/tl-gestion/tlg-tarea-formulario/tlg-tarea-formulario.component';
 import { TlgComponent } from './components/tasks/t-list/tl/tl-gestion/tlg/tlg.component';
 import { ContentComponent } from './shared/components/UI/common/content/content.component';
 import { FooterComponent } from './shared/components/UI/common/footer/footer.component';
@@ -44,13 +41,10 @@ import { LogoComponent } from './shared/components/UI/common/logo/logo.component
     LogoComponent,
     TlcComponent,
     TlgComponent,
-    TlghComponent,
-    TlgpComponent,
     TlcFiltrosComponent,
-    TlghFormularioComponent,
-    TlgpFormularioComponent,
-    TlgtComponent,
-    TlgtFormularioComponent,
+    TlgHabilidadFormularioComponent,
+    TlgPersonaFormularioComponent,
+    TlgTareaFormularioComponent,
   ],
   imports: [
     BrowserModule,

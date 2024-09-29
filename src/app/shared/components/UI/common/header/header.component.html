@@ -4,10 +4,24 @@
 
     <nav class="header-nav">
       <ul class="header-menu">
-        <li><a href="#inicio" class="header-link">Iniciar sesion</a></li>
-        <li><a href="#nosotros" class="header-link">Registrarse</a></li>
-        <li><a href="#servicios" class="header-link">Crear tarea</a></li>
-        <li><a href="#contacto" class="header-link">Contacto</a></li>
+        <li>
+          <a routerLink="/login" class="header-link" (click)="logOut()"
+            >Iniciar sesión</a
+          >
+        </li>
+        <li>
+          <a routerLink="/sign-up" class="header-link" (click)="logOut()"
+            >Registrarse</a
+          >
+        </li>
+
+        <li>
+          <a routerLink="/create-task" class="header-link">Crear tarea</a>
+        </li>
+        <li>
+          <a routerLink="/tasks-list" class="header-link">Listar tareas</a>
+        </li>
+
         <li class="dashboard-item ml-auto">
           <span class="dashboard-title">
             Hola:

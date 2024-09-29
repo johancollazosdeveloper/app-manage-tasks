@@ -1,13 +1,27 @@
 <main class="dashboard-container">
   <app-header></app-header>
-  <app-content containerClass="container-dashboard">
+  <app-content containerClass="container">
     <h1 class="title">Crear Nueva Tarea</h1>
-    <!-- Componente de Tareas -->
-    <app-tlgt (taskCompleted)="onTaskReceived(task)"></app-tlgt>
-    <!-- Componente de Personas -->
-    <app-tlgp></app-tlgp>
-    <!-- Componente de Habilidades -->
-    <app-tlgh></app-tlgh>
-    <button (click)="saveTask()">Guardar Tarea</button>
+    <app-tlg-tarea-formulario
+      (taskCompleted)="addTask($event)"
+    ></app-tlg-tarea-formulario>
   </app-content>
+  <button class="button-save animated-button" [routerLink]="['/tasks-list']">
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      viewBox="0 0 24 24"
+      stroke-width="1.5"
+      stroke="currentColor"
+      class="w-6 h-6 inline"
+    >
+      <path
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        d="M11.25 6.75L5.25 12l6 5.25M18 12H6"
+        stroke="currentColor"
+      />
+    </svg>
+    Volver a listado de tareas
+  </button>
 </main>

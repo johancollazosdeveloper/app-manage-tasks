@@ -97,7 +97,6 @@ export class AuthService {
           .doc(user.uid)
           .set(userData)
           .then(() => {
-            console.log('User data saved successfully');
             this.observeUserState();
             Swal.fire({
               imageUrl: '../../../assets/images/success.png',

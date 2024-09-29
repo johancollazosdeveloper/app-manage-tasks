@@ -6,55 +6,72 @@ import firebase from 'firebase/compat/app';
 import { Observable, from, of, throwError } from 'rxjs';
 import { catchError, map, tap } from 'rxjs/operators';
 import Swal from 'sweetalert2';
-import { Character } from '../interfaces/character';
+import { Task } from '../interfaces/tasks.model';
 import { User } from '../interfaces/user';
 
-
 @Injectable({
-  providedIn: 'root'
+  providedIn: 'root',
 })
 export class FirestoreService {
-
   private collectionUsers = 'users';
-  private collectionUserHeroes = 'userHeroes';
+  private collectionTasks = 'tasks';
   user$: Observable<firebase.User | null>;
 
-  constructor(private firestore: AngularFirestore, private afAuth: AngularFireAuth) {
+  constructor(
+    private firestore: AngularFirestore,
+    private afAuth: AngularFireAuth,
+  ) {
     this.user$ = this.afAuth.authState;
   }
 
   /**
    * @description
-   * * Obtiene un documento de usuario por UID desde la colección de usuarios en Firestore.
+   * * Obtiene un documento de usuario por UID desde la colecciï¿½n de usuarios en Firestore.
    * * Mapea el resultado para incluir el UID en los datos del usuario.
    * * Lanza un error si el documento no se encuentra.
-   * * Maneja errores utilizando el método `handleError`.
+   * * Maneja errores utilizando el mï¿½todo `handleError`.
    * @param uid {string} - El UID del usuario cuyo documento se va a obtener.
    * @returns {Observable<User>} - Un observable que emite el usuario con el UID.
    */
   getDatauserByUid(uid: string): Observable<User> {
-    return this.firestore.collection<User>(this.collectionUsers).doc(uid).valueChanges().pipe(
-      map((dataUser) => {
-        if (!dataUser) {
-          throw new Error('Document not found');
-        }
-        return { id: uid, ...dataUser } as User;
-      }),
-      catchError(this.handleError)
-    );
+    return this.firestore
+      .collection<User>(this.collectionUsers)
+      .doc(uid)
+      .valueChanges()
+      .pipe(
+        map((dataUser) => {
+          if (!dataUser) {
+            throw new Error('Document not found');
+          }
+          return { id: uid, ...dataUser } as User;
+        }),
+        catchError(this.handleError),
+      );
   }
 
   /**
    * @description
-   * * Guarda una lista de personajes seleccionados en Firestore en la colección 'userHeroes'.
-   * * Muestra un mensaje de éxito al guardar correctamente.
-   * * Maneja errores y muestra un mensaje de error si ocurre un problema.
-   * @param uid {string} - El UID del usuario cuyo registro se va a actualizar.
-   * @param preferences {Character[]} - La lista de personajes seleccionados a guardar.
-   * @returns {Observable<void>} - Un observable que completa sin emitir valores, o emite un error si ocurre.
+   * * Guarda una tarea en la colecciÃ³n de tareas en Firestore.
+   * * Genera un ID Ãºnico para la tarea antes de almacenarla.
+   * * Muestra una notificaciÃ³n de Ã©xito utilizando SweetAlert2.
+   * * En caso de error, maneja el error y lo registra.
+   * @param task {Task} - La tarea que se va a guardar en Firestore.
+   * @returns {Observable<void>} - Un observable que se completa cuando se guarda la tarea.
    */
-  saveListUserHeroes(uid: string, preferences: Character[]): Observable<void> {
-    return from(this.firestore.collection(this.collectionUserHeroes).doc(uid).set({ selectedCharacters: preferences })).pipe(
+  saveListTasks(task: Task): Observable<void> {
+    const taskId = this.firestore.createId();
+
+    const taskWithId: Task = {
+      ...task,
+      id: taskId,
+    };
+
+    return from(
+      this.firestore
+        .collection(this.collectionTasks)
+        .doc(taskId)
+        .set(taskWithId),
+    ).pipe(
       tap(() => {
         Swal.fire({
           imageUrl: '../../../assets/images/success.png',
@@ -69,36 +86,72 @@ export class FirestoreService {
             popup: 'sweetalert-popup',
             title: 'sweetalert-title',
             confirmButton: 'sweetalert-confirm',
-          }
-        });        
+          },
+        });
       }),
-      catchError(error => {
+      catchError((error) => {
         this.handleError(error);
-         // Devuelve un observable vacío en caso de error
         return of();
-      })
+      }),
     );
   }
 
   /**
    * @description
-   * * Obtiene los personajes seleccionados del usuario desde Firestore.
-   * * Extrae los personajes seleccionados del documento, retornando una lista vacía si no hay datos.
-   * * Maneja errores utilizando el método `handleError`.
-   * @param uid {string} - El UID del usuario cuyo documento se va a consultar.
-   * @returns {Observable<Character[]>} - Un observable que emite la lista de personajes seleccionados.
+   * * Obtiene todas las tareas de la colecciÃ³n de Firestore.
+   * * Convierte el campo deadLine a un objeto Date si no lo es.
+   * * En caso de error, maneja el error y lo registra.
+   * @returns {Observable<Task[]>} - Un observable que emite un arreglo de tareas.
    */
-  getSelectedCharacters(uid: string): Observable<Character[]> {
-    return this.firestore.collection(this.collectionUserHeroes).doc(uid).valueChanges().pipe(
-      map((doc: any) => doc?.selectedCharacters || []),
-      catchError(this.handleError)
+  getTasks(): Observable<Task[]> {
+    return this.firestore
+      .collection<Task>(this.collectionTasks)
+      .valueChanges()
+      .pipe(
+        map((tasks) =>
+          tasks.map((task) => ({
+            ...task,
+            deadLine: task.deadLine,
+          })),
+        ),
+        catchError((error) => {
+          this.handleError(error);
+          return [];
+        }),
+      );
+  }
+
+  /**
+   * @description
+   * * Obtiene las tareas filtradas por su estado.
+   * * Devuelve un observable que emite las tareas con el estado especificado.
+   * @param status {boolean} - El estado por el cual filtrar las tareas.
+   * @returns {Observable<Task[]>} - Un observable que emite un arreglo de tareas filtradas.
+   */
+  getTasksByStatus(status: boolean): Observable<Task[]> {
+    return this.firestore
+      .collection<Task>('tasks', (ref) => ref.where('status', '==', status))
+      .valueChanges();
+  }
+
+  /**
+   * @description
+   * * Actualiza el estado de una tarea en Firestore.
+   * * Devuelve un observable que se completa cuando se actualiza el estado.
+   * @param taskId {string} - El ID de la tarea cuya estado se va a actualizar.
+   * @param status {boolean} - El nuevo estado de la tarea.
+   * @returns {Observable<void>} - Un observable que se completa cuando se actualiza el estado.
+   */
+  updateTaskStatus(taskId: string, status: boolean): Observable<void> {
+    return from(
+      this.firestore.collection('tasks').doc(taskId).update({ status }),
     );
   }
 
   /**
    * @description
    * * Maneja los errores de solicitudes HTTP.
-   * * Muestra un mensaje de error utilizando SweetAlert2 según el tipo de error.
+   * * Muestra un mensaje de error utilizando SweetAlert2 segï¿½n el tipo de error.
    * * Devuelve un observable que emite el error manejado.
    * @param error {HttpErrorResponse} - El error de la respuesta HTTP que se va a manejar.
    * @returns {Observable<never>} - Un observable que emite el error manejado.
@@ -125,8 +178,8 @@ export class FirestoreService {
         popup: 'sweetalert-popup',
         title: 'sweetalert-title',
         confirmButton: 'sweetalert-confirm',
-      }
-    }); 
+      },
+    });
 
     return throwError(() => new Error(errorMessage));
   }

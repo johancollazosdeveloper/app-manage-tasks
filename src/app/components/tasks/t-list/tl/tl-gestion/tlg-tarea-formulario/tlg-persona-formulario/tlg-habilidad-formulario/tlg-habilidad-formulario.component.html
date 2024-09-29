@@ -1,0 +1,17 @@
+<!-- Formulario para habilidades -->
+<h3 class="title">Habilidades:</h3>
+<form [formGroup]="skillForm" (ngSubmit)="onSubmit()" class="form">
+  <div>
+    <label for="skill" class="label">Habilidad:</label>
+    <input
+      id="skill"
+      formControlName="name"
+      class="input"
+      placeholder="Ingrese una habilidad"
+    />
+  </div>
+
+  <button type="submit" class="button mb-4" *ngIf="skillForm.valid">
+    Añadir Habilidad
+  </button>
+</form>
