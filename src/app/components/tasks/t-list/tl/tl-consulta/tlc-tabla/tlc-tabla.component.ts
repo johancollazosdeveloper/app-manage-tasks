@@ -99,6 +99,7 @@ export class TlcTablaComponent implements OnInit, OnChanges, OnDestroy {
    */
   updateTaskStatus(task: Task, status: boolean) {
     task.status = status;
+    this.isLoading = true;
     this.subscription = this.firestoreService
       .updateTaskStatus(task.id!, status)
       .subscribe(() => {

@@ -10,7 +10,7 @@
       [class.completed]="task.status"
     >
       <h3 class="task-title">{{ task.title }}</h3>
-      <p class="task-deadline">Fecha límite: {{ task.deadLine }}</p>
+      <p class="mb-4">Fecha límite: {{ task.deadLine }}</p>
 
       <p class="font-semibold" *ngIf="task.people.length > 0">
         Personas asociadas:
@@ -19,7 +19,7 @@
       <ul>
         <li *ngFor="let person of task.people" class="mb-4">
           {{ person.fullName }} (Edad: {{ person.age }})
-          <ul class="mt-2">
+          <ul class="mt-4">
             <li *ngIf="person.skills.length > 0" class="font-semibold">
               Habilidades:
             </li>
