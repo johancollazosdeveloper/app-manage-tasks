@@ -1,0 +1,13 @@
+<main class="dashboard-container">
+  <app-header></app-header>
+  <app-content containerClass="container-dashboard">
+    <h1 class="title">Crear Nueva Tarea</h1>
+    <!-- Componente de Tareas -->
+    <app-tlgt (taskCompleted)="onTaskReceived(task)"></app-tlgt>
+    <!-- Componente de Personas -->
+    <app-tlgp></app-tlgp>
+    <!-- Componente de Habilidades -->
+    <app-tlgh></app-tlgh>
+    <button (click)="saveTask()">Guardar Tarea</button>
+  </app-content>
+</main>

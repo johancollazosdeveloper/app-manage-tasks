@@ -1,34 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 .section {
-  @apply bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center;
-  padding-top: 50px;
-  padding-left: 50px;
-  padding-right: 50px;
-  padding-bottom: 50px;
+  @apply bg-gray-50 dark:bg-gray-900 min-h-screen flex items-center justify-center p-12;
 }
 
 .container {
-  @apply w-full bg-white rounded-lg shadow dark:border sm:max-w-md xl:p-0 dark:bg-gray-800 dark:border-gray-700;
+  @apply w-full bg-white rounded-lg shadow border border-[#3f1d63] sm:max-w-md dark:bg-gray-800 dark:border-[#3f1d63];
+}
+
+.container-dashboard {
+  @apply w-full bg-white rounded-lg shadow border border-[#3f1d63] sm:max-w-4xl md:max-w-5xl lg:max-w-6xl xl:max-w-7xl p-8 dark:bg-gray-800 dark:border-[#3f1d63];
 }
 
 .content {
   @apply p-6 space-y-4 sm:p-8;
 }
 
-.header {
-  @apply flex flex-col items-center text-2xl font-semibold text-gray-900 dark:text-white mb-6;
-}
-
-.logo {
-  @apply w-32 h-auto mb-4;
-}
-
 .title {
-  @apply text-3xl font-bold leading-tight tracking-tight text-gray-900 dark:text-white;
+  @apply text-3xl font-bold leading-tight tracking-tight text-primary-600 mb-10 dark:text-primary-500 mt-10;
+}
+
+.title-filters {
+  @apply text-3xl font-bold leading-tight tracking-tight text-white mb-10 dark:text-white mt-10;
 }
 
 .form {
@@ -56,7 +51,7 @@
 }
 
 .footer {
-  @apply text-base font-light text-gray-500 dark:text-gray-400;
+  @apply text-base font-light text-gray-500 dark:text-gray-400 mt-6;
 }
 
 .signup-link {
@@ -64,29 +59,17 @@
 }
 
 .error-message {
-  color: red;
-  font-size: 0.875rem;
-  margin-top: 0.25rem;
-  margin-bottom: 0.5rem;
-  font-weight: 400;
-  display: block;
+  @apply text-red-500 text-sm mt-1 mb-2 font-normal block;
 }
 
-/* Main dashboard container */
 .dashboard-container {
   @apply bg-gray-50 dark:bg-gray-900 min-h-screen;
 }
 
-/* Header section of the dashboard */
 .dashboard-header {
   @apply flex justify-center py-5;
 }
 
-.dashboard-title {
-  @apply h-auto text-3xl font-bold text-gray-900 dark:text-gray-50;
-}
-
-/* Log out button container */
 .logout-container {
   @apply w-full flex justify-end py-5 pr-5;
 }
@@ -95,7 +78,6 @@
   @apply w-28 text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300 font-medium rounded-lg text-base px-5 py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800;
 }
 
-/* Character grid section */
 .character-div {
   @apply w-full py-10 flex justify-center;
 }
@@ -145,10 +127,8 @@
 }
 
 .button-save {
-  @apply fixed bottom-4 right-4 bg-blue-500 text-white py-2 px-4 rounded-full shadow-lg hover:bg-blue-600;
+  @apply fixed bottom-4 right-4 bg-primary-600 text-white py-2 px-4 rounded-full shadow-lg hover:bg-primary-700 focus:ring-4 focus:outline-none focus:ring-primary-300;
 }
-
-/* Classes for SweetAlert2 styles */
 
 .sweetalert-popup {
   @apply bg-white dark:bg-gray-800 rounded-lg shadow-lg p-6;
@@ -164,4 +144,127 @@
 
 .sweetalert-confirm {
   @apply w-full bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-lg py-2.5 text-center dark:bg-primary-600 dark:hover:bg-primary-700;
+}
+
+.header-container {
+  @apply bg-[#004776] w-full p-4;
+}
+
+.header {
+  @apply flex justify-between items-center max-w-7xl mx-auto w-full flex-wrap;
+}
+
+.logo {
+  @apply w-32 h-auto;
+}
+
+.header-nav {
+  @apply flex items-center w-full md:w-auto;
+}
+
+.header-menu {
+  @apply flex space-x-4 md:space-x-8 items-center w-full md:w-auto;
+}
+
+.header-link {
+  @apply text-white font-medium text-base md:text-lg hover:underline;
+}
+
+.dashboard-item {
+  @apply flex items-center space-x-4 ml-auto pr-4 justify-end w-full md:w-auto;
+}
+
+.dashboard-title {
+  @apply text-base md:text-lg font-bold text-primary-600;
+}
+
+.logout-button {
+  @apply text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:outline-none font-medium rounded-lg text-base px-4 py-2 text-center;
+  @apply md:px-5 md:py-2.5 md:text-base text-sm px-3 py-1.5;
+}
+
+.logout-button svg {
+  @apply mr-2 w-5 h-5;
+}
+
+@media (max-width: 640px) {
+  .logout-button {
+    @apply text-xs px-2 py-1;
+  }
+
+  .logout-button svg {
+    @apply w-4 h-4;
+  }
+}
+
+@media (max-width: 768px) {
+  .header {
+    @apply justify-center;
+  }
+
+  .header-menu {
+    @apply flex-wrap;
+  }
+
+  .dashboard-item {
+    @apply mt-2;
+  }
+}
+
+.animated-button {
+  transition: transform 0.2s ease-in-out;
+}
+
+.animated-button:hover {
+  transform: scale(1.1);
+}
+
+.checkmark {
+  transition: stroke-dasharray 0.4s ease-in-out;
+  stroke-dasharray: 50;
+  stroke-dashoffset: 50;
+}
+
+.animated-button:hover .checkmark {
+  stroke-dashoffset: 0;
+}
+
+/* Form container styling */
+.filter-form {
+  @apply flex flex-wrap space-x-4; /* Usa flex-wrap para permitir que se acomoden en varias líneas si es necesario */
+}
+
+/* Hide default checkbox */
+.hidden-checkbox {
+  @apply hidden;
+}
+
+/* Checkbox label styling */
+.checkbox-label {
+  @apply flex items-center space-x-3 cursor-pointer;
+  color: white; /* Cambia el color de la letra a blanco */
+}
+
+/* Custom checkbox styling */
+.custom-checkbox {
+  @apply w-6 h-6 rounded-full flex items-center justify-center transition-transform duration-200 ease-in-out;
+  border: 2px solid #00a7e2;
+}
+
+/* Add hover effect */
+.checkbox-label:hover .custom-checkbox {
+  transform: scale(1.1);
+}
+
+/* When checkbox is checked, animate checkmark */
+.hidden-checkbox:checked + .custom-checkbox .checkmark {
+  stroke-dashoffset: 0;
+  stroke: #00a7e2;
+}
+
+/* Responsive for mobile */
+@media (max-width: 640px) {
+  .filter-form {
+    @apply space-y-3;
+  }
 }

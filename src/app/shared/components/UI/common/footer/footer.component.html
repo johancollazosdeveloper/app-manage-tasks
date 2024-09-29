@@ -1,0 +1,10 @@
+<p class="footer">
+  <ng-container *ngIf="isLoginPage; else signupLink">
+    ¿No tienes una cuenta?
+    <a routerLink="/sign-up" class="signup-link">Regístrese</a>
+  </ng-container>
+  <ng-template #signupLink>
+    ¿Ya tienes una cuenta?
+    <a routerLink="/login" class="signup-link">Accede</a>
+  </ng-template>
+</p>

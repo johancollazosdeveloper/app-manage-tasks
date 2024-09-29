@@ -1,0 +1,10 @@
+<!-- tlgh.component.html -->
+<div>
+  <h2>Añadir Habilidad</h2>
+  <input
+    [(ngModel)]="newSkill.name"
+    placeholder="Nombre de la Habilidad"
+    required
+  />
+  <button (click)="addSkill()">Añadir Habilidad</button>
+</div>

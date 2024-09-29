@@ -1,0 +1,8 @@
+<main class="dashboard-container">
+  <app-header></app-header>
+  <app-content containerClass="container-dashboard">
+    <h1 class="title">Lista de Tareas</h1>
+    <app-tlc-filtros (filterChanged)="onFilterChange($event)"></app-tlc-filtros>
+    <app-tlc-tabla [filter]="selectedFilter"></app-tlc-tabla>
+  </app-content>
+</main>

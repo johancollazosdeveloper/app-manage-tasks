@@ -1,0 +1,87 @@
+<form class="filter-form flex flex-wrap space-x-4">
+  <h1 class="title-filters">Filtros:</h1>
+  <label class="checkbox-label">
+    <input
+      type="radio"
+      name="filter"
+      class="hidden-checkbox"
+      (change)="onFilterChange('all')"
+      checked
+    />
+    <span class="custom-checkbox">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="checkmark"
+      >
+        <circle cx="12" cy="12" r="10" stroke="currentColor" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 12l2 2 4-4"
+          stroke="currentColor"
+        />
+      </svg>
+    </span>
+    Todas
+  </label>
+
+  <label class="checkbox-label">
+    <input
+      type="radio"
+      name="filter"
+      class="hidden-checkbox"
+      (change)="onFilterChange('completed')"
+    />
+    <span class="custom-checkbox">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="checkmark"
+      >
+        <circle cx="12" cy="12" r="10" stroke="currentColor" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 12l2 2 4-4"
+          stroke="currentColor"
+        />
+      </svg>
+    </span>
+    Completadas
+  </label>
+
+  <label class="checkbox-label">
+    <input
+      type="radio"
+      name="filter"
+      class="hidden-checkbox"
+      (change)="onFilterChange('pending')"
+    />
+    <span class="custom-checkbox">
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        fill="none"
+        viewBox="0 0 24 24"
+        stroke-width="1.5"
+        stroke="currentColor"
+        class="checkmark"
+      >
+        <circle cx="12" cy="12" r="10" stroke="currentColor" />
+        <path
+          stroke-linecap="round"
+          stroke-linejoin="round"
+          d="M9 12l2 2 4-4"
+          stroke="currentColor"
+        />
+      </svg>
+    </span>
+    Pendientes
+  </label>
+</form>

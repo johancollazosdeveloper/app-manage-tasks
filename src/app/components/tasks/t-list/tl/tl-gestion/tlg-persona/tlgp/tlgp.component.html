@@ -1,0 +1,18 @@
+<!-- tlgp.component.html -->
+<div>
+  <h2>Añadir Persona</h2>
+  <input
+    [(ngModel)]="newPerson.fullName"
+    placeholder="Nombre Completo"
+    required
+  />
+  <input
+    [(ngModel)]="newPerson.age"
+    type="number"
+    placeholder="Edad"
+    required
+  />
+
+  <!-- Aquí no necesitas el app-tlgh porque ya está en tlg.component.html -->
+  <button (click)="addPerson()">Añadir Persona</button>
+</div>

@@ -1,0 +1,46 @@
+<div class="header-container">
+  <div class="header">
+    <img class="logo" src="../../../assets/images/logo.png" alt="logo" />
+
+    <nav class="header-nav">
+      <ul class="header-menu">
+        <li><a href="#inicio" class="header-link">Iniciar sesion</a></li>
+        <li><a href="#nosotros" class="header-link">Registrarse</a></li>
+        <li><a href="#servicios" class="header-link">Crear tarea</a></li>
+        <li><a href="#contacto" class="header-link">Contacto</a></li>
+        <li class="dashboard-item ml-auto">
+          <span class="dashboard-title">
+            Hola:
+            <span class="header-link">
+              {{ dataUser.name + ' ' + dataUser.lastName }}
+            </span>
+            bienvenid&#64;
+          </span>
+
+          <button (click)="logOut()" class="logout-button">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke-width="1.5"
+              stroke="currentColor"
+              class="w-6 h-6 inline"
+            >
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M15.75 9V5.25a2.25 2.25 0 00-2.25-2.25h-6A2.25 2.25 0 005.25 5.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15"
+              />
+              <path
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                d="M18 12h-9m0 0l3-3m-3 3l3 3"
+              />
+            </svg>
+            Salir
+          </button>
+        </li>
+      </ul>
+    </nav>
+  </div>
+</div>

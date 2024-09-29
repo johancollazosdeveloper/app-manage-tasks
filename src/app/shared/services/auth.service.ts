@@ -17,7 +17,7 @@ export class AuthService {
     private firebaseAuthenticationService: AngularFireAuth,
     private firestore: AngularFirestore,
     private router: Router,
-    private ngZone: NgZone
+    private ngZone: NgZone,
   ) {
     /**
      * @description
@@ -105,9 +105,14 @@ export class AuthService {
               imageHeight: 200,
               imageAlt: 'Success icon',
               title: 'Registro exitoso',
-              text: 'Tus datos han sido registrados correctamente.',
+              html: `<span class="sweetalert-text">Tus datos han sido registrados correctamente.</span>`,
               confirmButtonColor: '#28a745',
               confirmButtonText: 'Aceptar',
+              customClass: {
+                popup: 'sweetalert-popup',
+                title: 'sweetalert-title',
+                confirmButton: 'sweetalert-confirm',
+              },
             });
           })
           .catch((error: HttpErrorResponse) => this.handleError(error));
@@ -117,11 +122,11 @@ export class AuthService {
 
   /**
    * @description
-   * * Observa el estado de autenticacion del usuario y redirige al dashboard si el usuario est� autenticado.
+   * * Observa el estado de autenticacion del usuario y redirige al lista de tareas si el usuario est� autenticado.
    */
   observeUserState() {
     this.firebaseAuthenticationService.authState.subscribe((userState) => {
-      userState && this.ngZone.run(() => this.router.navigate(['dashboard']));
+      userState && this.ngZone.run(() => this.router.navigate(['tasks-list']));
     });
   }
 
