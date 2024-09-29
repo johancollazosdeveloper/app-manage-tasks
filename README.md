@@ -33,7 +33,7 @@ A demo of the app can be found [here](#https://app-manage-tasks.web.app) (https:
   - Firebase Authentication
   - Firestore (NoSQL database)
   - Firebase Hosting
-- **Tailwind CSS**: 3.4.10 for responsive styling
+- **Tailwind CSS**: 3.4.13 for responsive styling
 - **SweetAlert2**: 11.6.13 for notifications
 
 ## Prerequisites
